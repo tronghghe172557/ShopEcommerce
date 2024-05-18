@@ -10,6 +10,7 @@ app.use(helmet()); // ngăn chặn người dùng lấy được thông tin web 
 app.use(compression()); // nén dữ liệu để tiết kiệm băng thông => lỗi ở đây :))
 
 // init db
+require("./dbs/init.mongodb");
 
 // init routes
 app.get("/", (req, res) => {
