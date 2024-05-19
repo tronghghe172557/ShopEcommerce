@@ -14,14 +14,7 @@ app.use(compression()); // nén dữ liệu để tiết kiệm băng thông => 
 require("./dbs/init.mongodb");
 
 // init routes
-app.get("/", (req, res) => {
-  const strCompress = "Hello Trong";
-
-  return res.status(200).json({
-    message: `Wellcome Trong`,
-    metadata: strCompress.repeat(10000),
-  });
-});
+app.use('/', require('./routes/index'))
 
 // Handling error
 app.use((err, req, res, next) => {

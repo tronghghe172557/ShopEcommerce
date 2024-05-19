@@ -1,0 +1,4 @@
+### signUp
+POST http://localhost:3000/v1/api/shop/signup
+
+# lỗi 404: Máy chủ ko tìm thấy trang của bạn

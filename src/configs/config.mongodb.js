@@ -12,15 +12,15 @@
 //     }
 // }
 
-// LEVEL 01
+// LEVEL 03
 const dev = {
     app: {
         port: process.env.DEV_APP_PORT
     },
     db: {
-        host: process.env.DEV_APP_HOST || 'localhost',
-        port: process.env.DEV_APP_PORT || 27017, 
-        name: process.env.DEV_APP_NAME || 'shopDEV'
+        host: process.env.DEV_DB_HOST || 'localhost',
+        port: process.env.DEV_DB_PORT || 27017, 
+        name: process.env.DEV_DB_NAME || 'ShopDEV2'
     }
 }
 
