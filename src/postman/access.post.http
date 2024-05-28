@@ -1,4 +1,13 @@
+@url_dev=http://localhost:3052/v1/api
+
 ### signUp
-POST http://localhost:3000/v1/api/shop/signup
+POST {{url_dev}}/shop/signup
+Content-Type: application/json
+
+{
+    "name": "Shop Tips 1",
+    "email": "shoptips@gmail.com",
+    "password": "1234a"
+}
 
 # lỗi 404: Máy chủ ko tìm thấy trang của bạn

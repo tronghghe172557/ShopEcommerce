@@ -9,6 +9,10 @@ const app = express();
 app.use(morgan("dev")); // lưu lại khi người dùng đăng nhập vào với status
 app.use(helmet()); // ngăn chặn người dùng lấy được thông tin web dùng được công nghệ gì
 app.use(compression()); // nén dữ liệu để tiết kiệm băng thông => lỗi ở đây :))
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true,
+}))
 
 // init db
 require("./dbs/init.mongodb");
