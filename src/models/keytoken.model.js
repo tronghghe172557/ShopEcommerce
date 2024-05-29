@@ -18,6 +18,10 @@ var keyTokenSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    privateKey: {
+      type: String,
+      required: true,
+    },
     refreshToken: {
       // chưa hiểu cái này để làm gì lắm
       type: Array,

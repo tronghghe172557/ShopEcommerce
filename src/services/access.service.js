@@ -2,7 +2,7 @@ const { token } = require("morgan");
 const { createTokenPair } = require("../auth/authUtis");
 const shopModel = require("../models/shop.model");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+const crypto = require("node:crypto");
 const keyTokenService = require("./keyToken.service");
 const { getInfoData } = require("../utils");
 
@@ -41,40 +41,30 @@ class AccessService {
       // 
       if(newShop) {
         // step4: Create privateKey, publicKey
-        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-          modulusLength: 4096, // default key
-          publicKeyEncoding: {
-            type: 'pkcs1',  
-            format: 'pem', // xuất công khai ra định dạng pem để có thể convert thành string
-          },
-          privateKeyEncoding: {
-            type: 'pkcs1',
-            format: 'pem', // xuất công khai ra định dạng pem để có thể convert thành string
-          },
-        })
+
+        // 1 chuỗi dài 64 bit => của thằng nodejs
+        const privateKey = crypto.randomBytes(64).toString('hex');
+        const publicKey = crypto.randomBytes(64).toString('hex');
 
         console.log({privateKey, publicKey}) // save collection KeyStore
 
         //  step5: save publicKeyString in DB = publicKey + useId
-        const publicKeyString = await keyTokenService.createToken({
+        const keyStore = await keyTokenService.createToken({
           userId: newShop._id,
           publicKey: publicKey,
+          privateKey: privateKey,
         })
 
         // return error
-        if(!publicKeyString) {
+        if(!keyStore) {
           return {
             code: "xxx",
             message: 'publicKeyString error'
           }
-        }
-
-        const publicKeyObject = crypto.createPublicKey( publicKeyString )
-
-        console.log("Public key object :: ", publicKeyObject)
+        } 
 
         // created token pair => chưa hiểu lắm
-        const tokens = await createTokenPair( {userId: newShop._id, email}, publicKeyString, privateKey)
+        const tokens = await createTokenPair(  {userId: newShop._id, email}, publicKey, privateKey )
         console.log(`Created token success `, tokens)
 
         return {
@@ -84,7 +74,6 @@ class AccessService {
             tokens
           }
         }
-        // const tokens = await
       }
 
       return {
@@ -93,6 +82,7 @@ class AccessService {
       }
       
     } catch (error) {
+      console.error(error)
       return {
         code: "xxx",
         message: error.message,
