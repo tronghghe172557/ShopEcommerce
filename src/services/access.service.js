@@ -64,11 +64,12 @@ class AccessService {
         } 
 
         // created token pair => chưa hiểu lắm
+        // dùng JWT tạo và xác thực thông báo
         const tokens = await createTokenPair(  {userId: newShop._id, email}, publicKey, privateKey )
         console.log(`Created token success `, tokens)
 
         return {
-          code: 201,
+          code: 201, // tạo hoàn tất
           metadata: {
             shop: getInfoData({files: ['id', 'name', 'email'], object: newShop}),
             tokens
