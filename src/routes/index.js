@@ -1,16 +1,15 @@
 const express = require("express");
+const { apiKey, permission } = require("../auth/checkAuth");
 
 const router = express.Router();
 
+// Check apiKey => phải đi qua đây thì mới được sử dụng API
+router.use(apiKey)
+
+// Check permission => check xem có đủ quyền hạn không
+router.use(permission('0000')) 
+
 // ở đâu phải router.use
 router.use('/v1/api', require('./access/index'))
-// router.get("/", (req, res) => {
-//   const strCompress = "Hello Trong";
-
-//   return res.status(200).json({
-//     message: `Wellcome Trong`,
-//     metadata: strCompress.repeat(10000),
-//   });
-// });
 
 module.exports = router;
