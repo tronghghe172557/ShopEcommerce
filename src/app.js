@@ -20,10 +20,21 @@ require("./dbs/init.mongodb");
 // init routes
 app.use('/', require('./routes/index'))
 
-// Handling error
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
+// Handling error => xử lí lỗi khi vượt qua hết những router 
+// chưa xử lí lỗi trong TỪNG router con
+app.use((req, res, next) => {
+  const error = new Error('Not Found')
+  error.status = 404
+  next(error)
+})
+
+app.use((error, req, res, next) => {
+  const statusCode = error.status || 500
+  return res.status(statusCode).send({
+    status: 'error',
+    code: statusCode,
+    message: error.message || 'Internal Server Error'
+  });
 });
 
 module.exports = app;
