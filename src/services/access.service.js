@@ -63,11 +63,8 @@ class AccessService {
       console.log(`Created token success `, tokens)
 
       return {
-        code: 201, // tạo hoàn tất
-        metadata: {
           shop: getInfoData({files: ['id', 'name', 'email'], object: newShop}),
           tokens
-        }
       }
     }
 
