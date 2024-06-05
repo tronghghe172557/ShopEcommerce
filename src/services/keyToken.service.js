@@ -1,6 +1,7 @@
 // viết hàm để tạo token
 
 const keyTokenModel = require("../models/keytoken.model");
+const { Types } = require('mongoose')
 
 class keyTokenService {
 
@@ -60,6 +61,25 @@ class keyTokenService {
             return error;
         }
     }
-}
 
+    static findByUserId = async ( userId ) => {
+        console.log(userId)
+        const userIdObj = new Types.ObjectId(userId);
+        const keyInDb = await keyTokenModel.findOne({ user: userIdObj }).lean();
+
+        return keyInDb;
+        // user: Types.ObjectId(userId): find document have field name is "user" 
+        // and value have type 'Types.ObjectId(userId)'
+        // bug here
+    }
+
+    static removeKeyById = async ( id ) => {
+        // remove is deprecated (thay thế)
+        // remove => deleteOne
+        const removeKey =  await keyTokenModel.deleteOne( id )
+
+        return removeKey
+    }
+}
+ 
 module.exports = keyTokenService

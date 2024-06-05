@@ -17,6 +17,14 @@ const RoleShop = {
 
 class AccessService {
 
+  static logout = async( keyStore ) => {
+    const delKey = await keyTokenService.removeKeyById(keyStore._id);
+    console.log(delKey)
+
+    return delKey
+  }
+
+
   /*
     1 - Check email in DB
     2 - match password
