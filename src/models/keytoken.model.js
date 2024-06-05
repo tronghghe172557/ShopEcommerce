@@ -2,6 +2,7 @@
 
 const { Schema, model, Collection, mongoose } = require("mongoose"); // Erase if already required
 const { collection } = require("./shop.model");
+const { type } = require("os");
 
 const DOCUMENT_NAME = "Key";
 const COLLECTION_NAME = "Keys";
@@ -22,11 +23,15 @@ var keyTokenSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    refreshToken: {
+    refreshTokenUsed: {
       // chưa hiểu cái này để làm gì lắm
       type: Array,
       default: [],
     },
+    refreshToken: {
+      type: String,
+      require: true,
+    }
   },
   {
     collection: COLLECTION_NAME,

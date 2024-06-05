@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt");
 const crypto = require("node:crypto");
 const keyTokenService = require("./keyToken.service");
 const { getInfoData } = require("../utils");
-const { BadRequestError } = require('../core/error.response')
+const { BadRequestError, AuthFailureError } = require('../core/error.response');
+const { findByEmail } = require("./shop.service");
 
 const RoleShop = {
   SHOP: "SHOP",
@@ -15,6 +16,48 @@ const RoleShop = {
 };
 
 class AccessService {
+
+  /*
+    1 - Check email in DB
+    2 - match password
+    3 - create AT vs RT and save
+    4 - generate tokes
+    5 - get data return login
+  */
+
+  static login = async ({ email, password, refreshToken = null}) => {
+    // step 1. 
+    const foundShop = await findByEmail({ email })
+    if(!foundShop) throw new BadRequestError('Shop not registered')
+
+    // step 2.
+    const match = bcrypt.compare(password, foundShop.password)
+    if(!match) throw new AuthFailureError("Authorize error")
+
+    // step 3. create privateKey, publickey
+    const privateKey = crypto.randomBytes(64).toString('hex');
+    const publicKey = crypto.randomBytes(64).toString('hex');
+
+    // step 4. generate token
+    const {_id: userId} = foundShop
+    const tokens = await createTokenPair({userId, email}, publicKey, privateKey)
+    // console.log(tokens) 
+
+    // step 5. 
+    await keyTokenService.createToken({
+      userId,
+      refreshToken: tokens.refreshToken,
+      publicKey,
+      privateKey
+    })
+
+    return {
+      shop: getInfoData({files: [`_id`, `name`, `email`], object: foundShop}),
+      tokens
+    }
+  }
+
+
   static signUp = async ({ name, email, password }) => {
     // step 1: check email exists
     const holderShop = await shopModel.findOne({ email }).lean(); // lean() => query nhanh
@@ -43,10 +86,10 @@ class AccessService {
       const privateKey = crypto.randomBytes(64).toString('hex');
       const publicKey = crypto.randomBytes(64).toString('hex');
 
-      console.log({privateKey, publicKey}) // save collection KeyStore
+      //console.log({privateKey, publicKey}) // save collection KeyStore
 
       //  step5: save publicKeyString in DB = publicKey + useId
-      const keyStore = await keyTokenService.createToken({
+      const keyStore = await keyTokenService.createTokenSignup({
         userId: newShop._id,
         publicKey: publicKey,
         privateKey: privateKey,
@@ -59,8 +102,8 @@ class AccessService {
 
       // created token pair => chưa hiểu lắm
       // dùng JWT tạo và xác thực thông báo
-      const tokens = await createTokenPair(  {userId: newShop._id, email}, publicKey, privateKey )
-      console.log(`Created token success `, tokens)
+      const tokens = await createTokenPair({userId: newShop._id, email}, publicKey, privateKey )
+      //console.log(`Created token success `, tokens)
 
       return {
           shop: getInfoData({files: ['id', 'name', 'email'], object: newShop}),
