@@ -17,7 +17,7 @@ const createTokenPair = async ( payload, publicKey, privateKey ) => {
         // accessToken => dùng để user đảm bảo rằng user hoặc service đã được xác thực
         // để có thể truy cập vào tài nguyên mà được cho phép
         const accessToken = await JWT.sign(payload, publicKey, 
-                                        // headers  // CHỮ KÝ 
+                                        // payload  // CHỮ KÝ 
             {
             // algorithm: 'RS256', => thuật toán
             expiresIn: '2 days' // => time hết hạn
@@ -61,7 +61,7 @@ const authentication = asyncHandler( async(req, res, next) => {
     const userId = req.headers[HEADER.CLIENT_ID]
     if(!userId) throw new AuthFailureError('Invalid Request userId in authUtils')
     
-    console.log(userId)
+    // console.log(userId)
     // 2.
     const keyStore = await findByUserId(userId)
     if(!keyStore) throw new NotFoundError('Not found keyStore in authUtils')
@@ -84,7 +84,14 @@ const authentication = asyncHandler( async(req, res, next) => {
             
 })
 
+const verifyJWT = async ( token, keySecret) => {
+    const verify = await JWT.verify( token, keySecret )
+    // console.log(verify)
+    return verify
+}
+
 module.exports = {
     createTokenPair,
-    authentication
+    authentication,
+    verifyJWT
 }

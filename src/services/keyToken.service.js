@@ -57,13 +57,13 @@ class keyTokenService {
 
             return tokens ? tokens.publicKey : null
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             return error;
         }
     }
 
     static findByUserId = async ( userId ) => {
-        console.log(userId)
+        // console.log(userId)
         const userIdObj = new Types.ObjectId(userId);
         const keyInDb = await keyTokenModel.findOne({ user: userIdObj }).lean();
 
@@ -79,6 +79,24 @@ class keyTokenService {
         const removeKey =  await keyTokenModel.deleteOne( id )
 
         return removeKey
+    }
+
+    static findByRefreshTokenUsed = async ( refreshToken ) => {
+        const refreshTokenUsed = await keyTokenModel.findOne({ refreshTokenUsed: refreshToken }).lean()
+
+        return refreshTokenUsed
+    }
+
+    static findByRefreshToken = async ( refreshToken ) => {
+        const refreshTokenFind = await keyTokenModel.findOne({ refreshToken })
+        return refreshTokenFind
+    }
+
+    static deleteKeyById = async ( userId ) => {
+        const userIdObj = new Types.ObjectId(userId);
+        const deleteKey = await keyTokenModel.deleteOne({ user: userIdObj })
+
+        return deleteKey
     }
 }
  

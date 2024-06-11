@@ -1,13 +1,13 @@
 @url_dev=http://localhost:3052/v1/api
 
-## signUp
+# signUp
 # POST {{url_dev}}/shop/signup
 # Content-Type: application/json
 # x-api-key: 244e3b0e35c668530c0c6b2e3ad5868cb7b80fbbcb7df04675eb6e9caa35f28011027e5976070bc7220961ec0f9168b85dd60b248dc899658a36c10f6212ae6c
 
 # {
-#     "name": "Shop Tips 2",
-#     "email": "shoptips02@gmail.com",
+#     "name": "Shop Tips 4",
+#     "email": "shoptips04@gmail.com",
 #     "password": "1234a"
 # }
 
@@ -16,14 +16,22 @@
 # x-api-key: 244e3b0e35c668530c0c6b2e3ad5868cb7b80fbbcb7df04675eb6e9caa35f28011027e5976070bc7220961ec0f9168b85dd60b248dc899658a36c10f6212ae6c
 
 # {
-#     "email": "shoptips02@gmail.com",
-#     "password": "1234a"
+#     "email": "shoptips04@gmail.com",
+#    "password": "1234a"
 # }
 
-POST {{url_dev}}/shop/logout
+# POST {{url_dev}}/shop/logout
+# Content-Type: application/json
+# x-api-key: 244e3b0e35c668530c0c6b2e3ad5868cb7b80fbbcb7df04675eb6e9caa35f28011027e5976070bc7220961ec0f9168b85dd60b248dc899658a36c10f6212ae6c
+# x-client-id: 66686d085475ccb674d81ad9
+# authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY4NmQwODU0NzVjY2I2NzRkODFhZDkiLCJlbWFpbCI6InNob3B0aXBzMDFAZ21haWwuY29tIiwiaWF0IjoxNzE4MTIwMzA0LCJleHAiOjE3MTgyOTMxMDR9.ybTvzDY9rfI18yz4hmGA69WK3z2V-SK-09GadSS8fno
+
+POST {{url_dev}}/shop/handlerRefreshToken
 Content-Type: application/json
 x-api-key: 244e3b0e35c668530c0c6b2e3ad5868cb7b80fbbcb7df04675eb6e9caa35f28011027e5976070bc7220961ec0f9168b85dd60b248dc899658a36c10f6212ae6c
-x-client-id: 666019232184ced7340c1a0c
-authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMTkyMzIxODRjZWQ3MzQwYzFhMGMiLCJlbWFpbCI6InNob3B0aXBzMDJAZ21haWwuY29tIiwiaWF0IjoxNzE3NTgyMzg3LCJleHAiOjE3MTc3NTUxODd9.BmSisqnH5nzLr1HPw0MV6ikXsjIVhIlaHh1UMS8gZyM
+x-client-id: 66686d085475ccb674d81ad9
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY4NmQwODU0NzVjY2I2NzRkODFhZDkiLCJlbWFpbCI6InNob3B0aXBzMDFAZ21haWwuY29tIiwiaWF0IjoxNzE4MTIxOTg4LCJleHAiOjE3MTgyOTQ3ODh9.TtRra9vdxN6rpV7pH5rgaEbI3jZAD49TyqsGNlmwEW8
 
-# lỗi 404: Máy chủ ko tìm thấy trang của bạn 
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY4NmQwODU0NzVjY2I2NzRkODFhZDkiLCJlbWFpbCI6InNob3B0aXBzMDFAZ21haWwuY29tIiwiaWF0IjoxNzE4MTIxOTg4LCJleHAiOjE3MTg3MjY3ODh9.8_bOiWSknynsb7NEmKgTOhlcaVuMva2B7IfKa1qGyfE"
+}
