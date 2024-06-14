@@ -7,6 +7,7 @@ const keyTokenService = require("./keyToken.service");
 const { getInfoData } = require("../utils");
 const { BadRequestError, AuthFailureError, ForbiddenError } = require('../core/error.response');
 const { findByEmail } = require("./shop.service");
+const keytokenModel = require("../models/keytoken.model");
 
 const RoleShop = {
   SHOP: "SHOP",
@@ -16,6 +17,44 @@ const RoleShop = {
 };
 
 class AccessService {
+
+  static handlerRefreshTokenV2 = async ({ keyStore, user, refreshToken }) => {
+    const { userId, email } = user
+
+    console.log(keyStore)
+
+    if(keyStore.refreshTokenUsed.includes(refreshToken)) {
+      // delete all token in DB
+      const deleteKey = await keyTokenService.deleteKeyById(userId);
+      throw new ForbiddenError('Refresh key is used, !!!! something wrong happened !!! please login')
+    }
+
+    if(keyStore.refreshToken !== refreshToken) {
+      throw new AuthFailureError('Shop not registered')
+    }
+
+    // check user
+    const foundShop = await findByEmail({ email });
+    if(!foundShop) throw new AuthFailureError('Shop not registered 2')
+
+    // create new tokens
+    const tokens = await createTokenPair({userId, email}, keyStore.publicKey, keyStore.privateKey)
+
+    // update token
+    await keytokenModel.updateOne({ user: userId }, {
+      $set: {
+        refreshToken: tokens.refreshToken
+      },
+      $addToSet: {
+        refreshTokenUsed: refreshToken // token đã được sử dụng và add vào
+      }
+    })
+
+    return {
+      user,
+      tokens
+    }
+  }
 
   /*
     check this token used?

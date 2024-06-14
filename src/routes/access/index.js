@@ -1,7 +1,7 @@
 const express = require('express')
 const accessController = require('../../controller/access.controller')
 const {asyncHandler} = require('../../auth/handError.middleware')
-const { authentication } = require('../../auth/authUtis')
+const { authenticationV2 } = require('../../auth/authUtis')
 
 const router = express.Router()
 
@@ -11,7 +11,7 @@ router.post('/shop/signup', asyncHandler(accessController.signUp))
 router.post('/shop/login', asyncHandler(accessController.login))
 
 // authentication //
-router.use(authentication);
+router.use(authenticationV2);
 ////////////////
 router.post('/shop/logout', asyncHandler(accessController.logout))
 
