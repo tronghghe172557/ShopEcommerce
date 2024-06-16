@@ -11,5 +11,6 @@ router.use(permission('0000'))
 
 // ở đâu phải router.use
 router.use('/v1/api', require('./access/index'))
+router.use('/v1/api/product', require('./product/index'))
 
 module.exports = router;
