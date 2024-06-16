@@ -11,7 +11,11 @@ class ProductController {
             message: 'Create product success',
             metadata: await ProductService.createProduct(
                 req.body.product_type,
-                req.body
+                {
+                    ...req.body,
+                    product_shop: req.user.userId, // login success => in authUtis.js => user = decodeUser 
+                        // { userId, email }
+                }
             ),
         }).send(res)
     }

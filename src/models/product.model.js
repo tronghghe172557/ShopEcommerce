@@ -37,7 +37,7 @@ const productSchema = new Schema(
     },
   },
   {
-    collation: COLLECTION_NAME,
+    collection: COLLECTION_NAME,
     timestamps: true,
   }
 );
@@ -51,7 +51,7 @@ const clothingSchema = new Schema(
     material: String,
   },
   {
-    collection: "clothes",
+    collection: "Clothes",
     timestamps: true,
   }
 );
@@ -63,7 +63,7 @@ const electronicSchema = new Schema(
     color : String,
   },
   {
-    collection: "electronic",
+    collection: "Electronics",
     timestamps: true,
   }
 );

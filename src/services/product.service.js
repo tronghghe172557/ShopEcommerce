@@ -37,8 +37,8 @@ class Product {
         this.product_attributes = product_attributes;
     }
 
-    async createProduct() {
-        return await product.create(this)
+    async createProduct( product_id ) {
+        return await product.create({ ...this, _id: product_id })
     }
 
 }
@@ -49,12 +49,19 @@ class Clothing extends Product {
     // @override
     async createProduct() {
         // create attribute first
-        const newClothing = await clothing.create(this.product_attributes)
+        const newClothing = await clothing.create({
+            ...this.product_attributes,
+            product_shop: this.product_shop
+        })
         if(!newClothing) throw new BadRequestError('Create new Clothing error')
 
         // create product include newClothing
-        const newProduct = await super.createProduct() // chính là thằng Product
+        const newProduct = await super.createProduct( newClothing._id ) // chính là thằng Product
         if(!newProduct) throw new BadRequestError('Create new Product error')
+
+        // Nếu Tạo Clothing thành công => nhưng mà chưa chắc tạo Product thành công
+        
+        //
 
         return newProduct;
     }
@@ -67,11 +74,14 @@ class Electronic extends Product {
     // @override
     async createProduct() {
         // create attribute first
-        const newElectronic = await electronic.create(this.product_attributes)
+        const newElectronic = await electronic.create({
+            ...this.product_attributes,
+            product_shop: this.product_shop
+        })
         if(!newElectronic) throw new BadRequestError('Create new Electronics error')
 
         // create product include newElectronic
-        const newProduct = await super.createProduct() // chính là thằng Product
+        const newProduct = await super.createProduct( newElectronic._id ) // chính là thằng Product
         if(!newProduct) throw new BadRequestError('Create new Product error')
 
         return newProduct;
