@@ -3,24 +3,23 @@ const { product, clothing, electronic, furniture } = require('../models/product.
 const { BadRequestError } = require('../core/error.response')
 // define Factory class to create product
 class ProductFactory {
-
-    // khi thêm 1 tính năng thì thêm như này 
-    /*
-    1. Tạo model trong db
-    2. Tạo Class mới service
-    3. Tạo thông tin mới cho thằng ProductFactory
+    /* 
+        type: "",
+        payload
     */
+   // đối tượng tĩnh để lưu trữ mối liên hệ giữa sản phẩm + lớp sản phẩm
+   static productRegistry = {} // key - class // đăng ký cho mỗi cặp value + class ( new product )
+
+   // đăng ký 1 sản phẩm mới
+   static registerProductType( type, classRef ) {
+    ProductFactory.productRegistry[type] = classRef
+   }
+
     static async createProduct(type, payload) {
-        switch( type ) {
-            case 'Electronics':
-                return await new Electronic(payload).createProduct();
-            case 'Clothing':
-                return await new Clothing(payload).createProduct();
-            case 'Furniture':
-                return await new Furniture(payload).createProduct();
-            default:
-                throw new BadRequestError(`Invalid Product Types: ${type}`) 
-        }
+        const productClass = ProductFactory.productRegistry[type]
+        if(!productClass)  throw new BadRequestError(`Invalid Product Types: ${type}`) 
+
+        return new productClass( payload ).createProduct();
     }
 }
 
@@ -94,6 +93,7 @@ class Electronic extends Product {
 
 }
 
+// Define sub-class for different product types Furniture
 class Furniture extends Product {
 
     // @override
@@ -113,6 +113,13 @@ class Furniture extends Product {
     }
 
 }
+
+// register product types
+ProductFactory.registerProductType('Electronics', Electronic)
+ProductFactory.registerProductType('Clothing', Clothing)
+ProductFactory.registerProductType('Furniture', Furniture)
+// ProductFactory.registerProductType('Furniture', Furniture) // add thêm vào đây
+
 
 // export nó như 1 class chứ ko được export như 1 đối tượng
 // class => mới dùng được hàm tĩnh
