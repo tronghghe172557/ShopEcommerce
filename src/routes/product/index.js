@@ -6,12 +6,16 @@ const { authenticationV2 } = require('../../auth/authUtis')
 
 const router = express.Router()
 
+router.get('/search/:keySearch', asyncHandler(productController.getListSearchShop))
+
 // authentication //
 router.use(authenticationV2);
 ////////////////
 router.post('', asyncHandler(productController.createProduct))
 
 router.post('/published/:id', asyncHandler(productController.publishProductByShop))
+
+router.post('/unpublished/:id', asyncHandler(productController.unPublishProductByShop))
 
 
 // QUERY //
