@@ -6,7 +6,7 @@ const { SuccessResponse } = require('../core/success.response')
 class ProductController {
 
     createProduct = async(req, res, next) => {
-        console.log(req.body)
+        // console.log(req.body)
 
         // new SuccessResponse({
         //     message: 'Create product success',
@@ -32,6 +32,38 @@ class ProductController {
             ),
         }).send(res) 
     }
+
+    // PUT //
+    publishProductByShop = async ( req, res, next ) => {
+        new SuccessResponse({
+            message: 'publishProductByShop success',
+            metadata: await ProductServiceV2.publishProductByShop({
+                product_shop: req.user.userId,
+                product_id: req.params.id
+            }),
+        }).send(res) 
+    }
+    // END PUT //
+
+    // QUERY //
+    getAllDraftShop = async ( req, res, next ) => {
+        new SuccessResponse({
+            message: 'Get list Draft success',
+            metadata: await ProductServiceV2.findAllDraftForShop({
+                product_shop: req.user.userId,
+            }),
+        }).send(res) 
+    }
+
+    getAllPublishShop = async ( req, res, next ) => {
+        new SuccessResponse({
+            message: 'Get list Publish success',
+            metadata: await ProductServiceV2.findAllPublishForShop({
+                product_shop: req.user.userId,
+            }),
+        }).send(res) 
+    }
+    // END QUERY //
 
 }
 
