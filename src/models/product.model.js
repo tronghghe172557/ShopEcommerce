@@ -1,12 +1,13 @@
 const { model, Schema } = require("mongoose");
+const slugify = require('slugify')
 
 const DOCUMENT_NAME = "Product";
-const COLLECTION_NAME = "Products";
+const COLLECTION_NAME = "Products";           
 
 // Declare the Schema of the Mongo model
 const productSchema = new Schema(
   {
-    product_name: {
+    product_name: { // quan jean cao cap
       type: String,
       required: true,
     },
@@ -14,7 +15,11 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    product_description: {
+    product_description: { // quan-jean-cao-cap
+      type: String, 
+    },
+    // slug quan trong nay
+    product_slug: {
       type: String,
     },
     product_price: {
@@ -35,12 +40,49 @@ const productSchema = new Schema(
       type: Schema.Types.Mixed, // có thể lưu trữ bất kì đối tượng, bất kì kiểu dữ liệu nào
       require: true,
     },
+
+    // more
+    product_ratingAverage: {
+      type: Number,
+      default: 4.5,
+      min: [1, 'Rating must be above 1.0'],
+      max: [5, 'Rating must be above 5.0'],
+      // 4.3336 => 4.3
+      set: (val) => Math.round(val * 10) / 10
+    },
+
+    // variations // ex: iphone 14 + xanh + 128g
+    product_variations: {
+      type: Array, 
+      default: [],
+    },
+
+    // 
+    isDraft: {
+      type: Boolean,
+      default: true,
+      index: true,
+      select : false,  // khi chúng t sử dụng hàm query các thứ thì ko lấy trường này ra 
+    },
+
+    isPublished: {
+      type: Boolean,
+      default: false,
+      index: true,
+      select : false,  // khi chúng t sử dụng hàm query các thứ thì ko lấy trường này ra 
+    }
   },
   {
     collection: COLLECTION_NAME,
     timestamps: true,
   }
 );
+
+// Document middleware: runs before .save() and .create() ....
+productSchema.pre('save', function( next) {
+  this.product_slug = slugify(this.product_name, { lower: true });
+  next();
+})
 
 // define the product type
 
