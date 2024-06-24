@@ -96,6 +96,21 @@ class ProductController {
     }
     // END QUERY //
 
+    // 
+    updateProduct = async ( req, res, next ) => {
+        new SuccessResponse({
+            message: 'Get updateProduct success',
+            metadata: await ProductServiceV2.updateProduct(
+                req.body.product_type,
+                req.params.productId,
+                { 
+                ...req.body, 
+                product_shop: req.user.userId
+                }
+        ),
+        }).send(res) 
+    }
+
 }
 
 module.exports = new ProductController(); // trả về các method của obj đó

@@ -1,0 +1,19 @@
+@url_dev=http://localhost:3052/v1/api/product
+
+PATCH {{url_dev}/66763a84a9e7e943e8a28b51}
+Content-Type: application/json
+x-api-key: 244e3b0e35c668530c0c6b2e3ad5868cb7b80fbbcb7df04675eb6e9caa35f28011027e5976070bc7220961ec0f9168b85dd60b248dc899658a36c10f6212ae6c
+x-client-id: 66686d085475ccb674d81ad9
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjY4NmQwODU0NzVjY2I2NzRkODFhZDkiLCJlbWFpbCI6InNob3B0aXBzMDFAZ21haWwuY29tIiwiaWF0IjoxNzE5MjQwMTE0LCJleHAiOjE3MTk0MTI5MTR9.aZMDlp0PJjdNvuFryXr-kPO-JcaWeXsGnPj67jnFk4c
+
+{
+    "product_attributes": {
+       "brand": "Apple",
+        "model": "inphone 14 64g",
+         "color": "Red"
+    },
+    "product_type": "Electronics",
+    "product_name": "inphone 14 ",
+    "product_price": 1000
+}
+

@@ -67,6 +67,14 @@ const searchProductsByUser = async ({ keySearch }) => {
     return results;
 }
 
+const updateProductId = async ({ product_id, bodyUpdate, model, isNew = true }) => {
+    const dataAfterUpdate = model.findByIdAndUpdate( product_id, bodyUpdate, {
+        new: isNew,
+    })
+
+    return dataAfterUpdate;
+}
+
 // Hàm chung
 const queryProduct = async ({ query, limit, skip }) => {
     return await product.find( query )
@@ -106,4 +114,5 @@ module.exports = {
     searchProductsByUser,
     findAllProducts,
     findProduct,
+    updateProductId
 }
