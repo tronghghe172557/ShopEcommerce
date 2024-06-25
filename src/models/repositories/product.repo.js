@@ -67,24 +67,6 @@ const searchProductsByUser = async ({ keySearch }) => {
     return results;
 }
 
-const updateProductId = async ({ product_id, bodyUpdate, model, isNew = true }) => {
-    const dataAfterUpdate = model.findByIdAndUpdate( product_id, bodyUpdate, {
-        new: isNew,
-    })
-
-    return dataAfterUpdate;
-}
-
-// Hàm chung
-const queryProduct = async ({ query, limit, skip }) => {
-    return await product.find( query )
-    .populate('product_shop', 'name email -_id')
-    .sort({ updateAt: -1 })
-    .skip(skip)
-    .limit(limit)
-    .lean()
-}
-
 const findAllProducts = async ({ limit, sort, page, filter, select }) => {
     const skip = (page - 1) * limit;
     const sortBy = sort == 'ctime' ? {_id: -1} : {_id: 1};
@@ -106,6 +88,57 @@ const findProduct = async ({ product_id, unSelect }) => {
     return productId
 }
 
+const updateProductId = async ({ product_id, bodyUpdate, model, isNew = true }) => {
+    const dataAfterUpdate = await model.findByIdAndUpdate( product_id, bodyUpdate, {
+        new: isNew,
+    })
+
+    return dataAfterUpdate;
+}
+
+// Hàm chung
+const queryProduct = async ({ query, limit, skip }) => {
+    return await product.find( query )
+    .populate('product_shop', 'name email -_id')
+    .sort({ updateAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean()
+}
+
+/*
+    const a = {
+        c: {
+            d: 1,
+            e: 2 => xoá đi 
+        }
+    }
+
+    db.collection.updateOne({
+        `c.d`: 1,
+        `c.e`: 2 => tự động xoá đi
+    })
+*/
+const updateNestedObjectParse = obj => {
+    console.log('[1]::', obj)
+    const final = {};
+    Object.keys(obj).forEach( k => {
+        console.log('[3]::', k)
+        if(typeof obj[k] == 'object' && !Array.isArray(obj[k])) { // 'object' viết thường => 'Object'sai
+            const response = updateNestedObjectParse(obj[k])
+            Object.keys(response).forEach( a => {
+                console.log('[4]::', a)
+                final[`${k}.${a}`] = response[a]
+            })
+        } else {
+            final[k] = obj[k]
+        }
+    })
+    console.log('[2]::', final)
+
+    return final
+}
+
 module.exports = {
     findAllDraftForShop,
     publishProductByShop,
@@ -114,5 +147,6 @@ module.exports = {
     searchProductsByUser,
     findAllProducts,
     findProduct,
-    updateProductId
+    updateProductId,
+    updateNestedObjectParse,
 }

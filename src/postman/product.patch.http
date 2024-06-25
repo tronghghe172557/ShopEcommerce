@@ -1,6 +1,6 @@
-@url_dev=http://localhost:3052/v1/api/product
+@url_dev=http://localhost:3052/v1/api/
 
-PATCH {{url_dev}/66763a84a9e7e943e8a28b51}
+PATCH {{url_dev}/product/66763a84a9e7e943e8a28b51}
 Content-Type: application/json
 x-api-key: 244e3b0e35c668530c0c6b2e3ad5868cb7b80fbbcb7df04675eb6e9caa35f28011027e5976070bc7220961ec0f9168b85dd60b248dc899658a36c10f6212ae6c
 x-client-id: 66686d085475ccb674d81ad9

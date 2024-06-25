@@ -15,8 +15,20 @@ const unGetSelectData = ( select = [] ) => {
     return Object.fromEntries( select.map(el => [el, 0]) )
 }
 
+// xoá những thuộc tính có giá trị = null trong obj
+const removeUndefinedObject = obj => {
+    Object.keys(obj).forEach( key => {
+        if(obj[key] == null) {
+            delete obj[key];
+        }
+    })
+
+    return obj
+}
+
 module.exports = {
     getInfoData,
     getSelectData,
     unGetSelectData,
+    removeUndefinedObject
 }
